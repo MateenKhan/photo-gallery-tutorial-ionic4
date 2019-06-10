@@ -13,4 +13,17 @@ The complete source code is contained within. Please follow along with the [comp
 
 ## How to build and deploy apk
 * https://ionicframework.com/docs/v1/guide/publishing.html
-* ionic cordova build --release android
+* or
+* https://ionicframework.com/docs/v3/intro/deploying/
+* run below commands (you may have to configure your system which is your task :) )
+#* ionic cordova build --release android
+* ionic cordova build android --prod --release
+#* keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
+* keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-alias
+#* (#* keytool -importkeystore -srckeystore my-release-key.jks -destkeystore my-release-key.jks -deststoretype pkcs12)
+
+#* jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk alias_name
+* jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.jks ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk my-alias
+#* zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk app.apk
+* zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk HelloWorld.apk
+* apksigner verify HelloWorld.apk
